@@ -1,0 +1,10 @@
+{% extends "base.tmpl" %}
+
+{% block title %} EnhanceMe Login {% endblock %}
+
+{% block main_content %}
+
+    <h2> Thanks for using FinickyFeeds. </h2>
+    <a href="{% url django.contrib.auth.views.login %}"> login again </a>
+
+{% endblock main_content %}

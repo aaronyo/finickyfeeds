@@ -1,8 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
+
 <head>
     <title>{% block title %} FinickyFeeds {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="/media/css/base.css" />
 </head>
-<body> {% block body %} {% endblock %} </body>
+<body>
+
+<!-- Container --> 
+<div id="container">
+
+<div id="header">
+    <div id="branding"> 
+        <h1 id="site-name">FinickyFeeds</h1>
+    </div>
+    {% block nav_tools %} {% endblock nav_tools %}
+</div>
+
+<!-- Content colMS-->
+<div id="content" class="colMS">
+
+    {% block main_content %}
+    {% endblock main_content %}
+
+</div>
+<!--End Content colMS-->
+
+</body>
+
+</div>
+<!-- End Container -->
+
 </html>
+
 

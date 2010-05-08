@@ -8,6 +8,7 @@ import finickyfeeds.feeds.urls
 
 urlpatterns = \
     patterns('',
+             (r'finickyfeeds/$', 'finickyfeeds.feeds.views.list'),
              # Standard django login/logout view handlers
              (r'^finickyfeeds/login/',
               'django.contrib.auth.views.login',

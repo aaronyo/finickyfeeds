@@ -1,9 +1,15 @@
-{% if feed_sources %}
-    <ul>
-    {% for s in feed_sources %}
-        <li>{{ s.url }}</li>
-    {% endfor %}
-    </ul>
-{% endif %}
-     
+{% extends "base_logged_in.tmpl" %}
+
+{% block main_content %}
+
+   <h2> Your Subscriptions </h2>
+    {% if feed_sources %}
+        <ul>
+        {% for s in feed_sources %}
+            <li>{{ s.url }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock main_content %}
 

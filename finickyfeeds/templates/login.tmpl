@@ -2,9 +2,10 @@
 
 {% block title %} EnhanceMe Login {% endblock %}
 
-{% block body %}
+{% block main_content %}
 
-<H2> FinickyFeeds Login </H2>
+
+<h2> Login </h2>
 
 {% if form.errors %}
     <font color=red>
@@ -30,4 +31,7 @@
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-{% endblock body %}
+</div>
+<!--End Content colMS-->
+
+{% endblock main_content %}

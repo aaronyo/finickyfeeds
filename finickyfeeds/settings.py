@@ -63,6 +63,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
+LOGIN_URL = '/finickyfeeds/login/'
 LOGIN_REDIRECT_URL = '/finickyfeeds/'
 
 ROOT_URLCONF = 'finickyfeeds.urls'
