@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
-import enhanceme.feeds.views
-from enhanceme import feeds
+import finickyfeeds.feeds.views
+from finickyfeeds import feeds
 
 urlpatterns = patterns('',
     # Example:

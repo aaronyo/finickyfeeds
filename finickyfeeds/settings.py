@@ -1,4 +1,4 @@
-# Django settings for enhanceme project.
+# Django settings for finickyfeeds project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -10,7 +10,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = '/var/local/sqlite/enhanceme'             # Or path to database file if using sqlite3.
+DATABASE_NAME = '/var/local/sqlite/finickyfeeds'             # Or path to database file if using sqlite3.
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
@@ -63,9 +63,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-LOGIN_REDIRECT_URL = '/enhanceme/'
+LOGIN_REDIRECT_URL = '/finickyfeeds/'
 
-ROOT_URLCONF = 'enhanceme.urls'
+ROOT_URLCONF = 'finickyfeeds.urls'
 
 # let's setup our template dirs relative to the project (or this file, anyway)
 # so templates are portable along with everything else
@@ -87,5 +87,5 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
-    'enhanceme.feeds'
+    'finickyfeeds.feeds'
 )

@@ -1,4 +1,4 @@
-from enhanceme.feeds.models import FeedSource, Tag
+from finickyfeeds.feeds.models import FeedSource, Tag
 from django.contrib import admin
 
 # FIXME: probably don't actually need admin interfaces for these...

@@ -1,7 +1,7 @@
 from django.template import loader, Context
 from django.http import HttpResponse
 
-from enhanceme.feeds.models import FeedSource
+from finickyfeeds.feeds.models import FeedSource
 
 def manage():
     pass

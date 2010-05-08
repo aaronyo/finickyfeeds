@@ -4,24 +4,24 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-import enhanceme.feeds.urls
+import finickyfeeds.feeds.urls
 
 urlpatterns = \
     patterns('',
              # Standard django login/logout view handlers
-             (r'^enhanceme/login/',
+             (r'^finickyfeeds/login/',
               'django.contrib.auth.views.login',
               {'template_name': 'login.tmpl'}),
-             (r'^enhanceme/logout/',
+             (r'^finickyfeeds/logout/',
               'django.contrib.auth.views.logout',
               {'template_name': 'logout.tmpl'}),
 
-             (r'^enhanceme/feeds/', include(enhanceme.feeds.urls)),
+             (r'^finickyfeeds/feeds/', include(finickyfeeds.feeds.urls)),
 
              # Standard django admin includes
-             (r'^enhanceme/admin/doc/',
+             (r'^finickyfeeds/admin/doc/',
               include('django.contrib.admindocs.urls')),
-             (r'^enhanceme/admin/', include(admin.site.urls)),
+             (r'^finickyfeeds/admin/', include(admin.site.urls)),
 
                        
 )
