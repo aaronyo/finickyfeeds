@@ -1,0 +1,33 @@
+{% extends "base.tmpl" %}
+
+{% block title %} EnhanceMe Login {% endblock %}
+
+{% block body %}
+
+<H2> EnhanceMe Login </H2>
+
+{% if form.errors %}
+    <font color=red>
+        <p> The username and password did not match. </p>
+        <p> Please try again.</p>
+    </font>
+{% endif %}
+
+{# This login markup is pretty much just cut/paste from the Django tutorial. #}
+<form method="post" action="{% url django.contrib.auth.views.login %}">
+<table>
+<tr>
+    <td>{{ form.username.label_tag }}</td>
+    <td>{{ form.username }}</td>
+</tr>
+<tr>
+    <td>{{ form.password.label_tag }}</td>
+    <td>{{ form.password }}</td>
+</tr>
+</table>
+
+<input type="submit" value="login" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+{% endblock body %}

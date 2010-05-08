@@ -6,14 +6,22 @@ admin.autodiscover()
 
 import enhanceme.feeds.urls
 
-urlpatterns = patterns('',
-    # Example:
-    (r'^enhanceme/feeds/', include('enhanceme.feeds.urls')),
+urlpatterns = \
+    patterns('',
+             # Standard django login/logout view handlers
+             (r'^enhanceme/login/',
+              'django.contrib.auth.views.login',
+              {'template_name': 'login.tmpl'}),
+             (r'^enhanceme/logout/',
+              'django.contrib.auth.views.logout',
+              {'template_name': 'logout.tmpl'}),
 
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+             (r'^enhanceme/feeds/', include(enhanceme.feeds.urls)),
 
-    # Uncomment the next line to enable the admin:
-    (r'^enhanceme/admin/', include(admin.site.urls)),
+             # Standard django admin includes
+             (r'^enhanceme/admin/doc/',
+              include('django.contrib.admindocs.urls')),
+             (r'^enhanceme/admin/', include(admin.site.urls)),
+
+                       
 )
