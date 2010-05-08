@@ -1,0 +1,9 @@
+{% if feed_sources %}
+    <ul>
+    {% for s in feed_sources %}
+        <li>{{ s.url }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+     
+

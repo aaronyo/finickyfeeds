@@ -1,4 +1,4 @@
-# Django settings for enhanceme_site project.
+# Django settings for enhanceme project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -63,12 +63,21 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-ROOT_URLCONF = 'enhanceme_site.urls'
+ROOT_URLCONF = 'enhanceme.urls'
+
+# let's setup our template dirs relative to the project (or this file, anyway)
+# so templates are portable along with everything else
+# this soln same as: http://code.djangoproject.com/ticket/694 so maybe the
+# most elegant
+import os.path
+PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_PATH, "templates"),
+
 )
 
 INSTALLED_APPS = (
@@ -76,4 +85,6 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.admin',
+    'enhanceme.feeds'
 )
