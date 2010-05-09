@@ -52,7 +52,6 @@
 {% block main_content %}
 
    <h2> Your Subscriptions </h2>
-    {% if subscriptions %}
         <div id="feeds-accordion"> 
                 <div>
                     <h3><a href="#">New Subscription</a></h3> 
@@ -82,6 +81,7 @@
 	              </form>
                     </div>
                 </div>
+          {% if subscriptions %}
             {% for sub in subscriptions %}
                 <div> 
                     <h3><a href="#">{{ sub.feed.title }}</a></h3> 
@@ -113,8 +113,8 @@ value= "{% for t in sub.tags.all %}{{ t.tag }}{% if not forloop.last %}, {% endi
                     </div>
 	        </div> 
             {% endfor %}
+          {% endif %}
         </div> 
-    {% endif %}
 
 {% endblock main_content %}
 
