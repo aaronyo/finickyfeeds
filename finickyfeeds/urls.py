@@ -1,3 +1,5 @@
+from finickyfeeds import settings
+
 from django.conf.urls.defaults import *
 
 # The next two lines enable the admin site:
@@ -8,7 +10,14 @@ import finickyfeeds.feeds.urls
 
 urlpatterns = \
     patterns('',
+             # For serving static resources
+             (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+              {'document_root': settings.STATIC_MEDIA_PATH }),
+
+             # Default to the list view, which requires login so you'll
+             # bounce there if not logged in
              (r'finickyfeeds/$', 'finickyfeeds.feeds.views.list'),
+
              # Standard django login/logout view handlers
              (r'^finickyfeeds/login/',
               'django.contrib.auth.views.login',
@@ -24,5 +33,4 @@ urlpatterns = \
               include('django.contrib.admindocs.urls')),
              (r'^finickyfeeds/admin/', include(admin.site.urls)),
 
-                       
 )

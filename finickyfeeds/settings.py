@@ -1,4 +1,7 @@
 # Django settings for finickyfeeds project.
+# edits marked "CUSTOM" indicate they were not auto generated
+
+import os.path
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -33,6 +36,19 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
+# CUSTOM:
+# Determine the project (or path to this settings file, anyway) so
+# so templates, media, etc. is can be ref'd relative to this path
+# and be portable along with everything else
+PROJECT_PATH = os.path.abspath( os.path.split(__file__)[0] )
+
+# CUSTOM:
+# not using os.path.join because the django doc suggested you should always
+# use forward slashes for templates so this is likey the case for all
+# paths in the settings file (though not sure)
+RESOURCE_PATH = PROJECT_PATH + '/' + 'resources' 
+STATIC_MEDIA_PATH = RESOURCE_PATH + '/' + 'media'
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = ''
@@ -40,7 +56,7 @@ MEDIA_ROOT = ''
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/ffmedia/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -68,18 +84,11 @@ LOGIN_REDIRECT_URL = '/finickyfeeds/'
 
 ROOT_URLCONF = 'finickyfeeds.urls'
 
-# let's setup our template dirs relative to the project (or this file, anyway)
-# so templates are portable along with everything else
-# this soln from as: http://code.djangoproject.com/ticket/694 so may be the
-# most elegant
-import os.path
-PROJECT_PATH = os.path.abspath( os.path.split(__file__)[0] )
-
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_PATH, "templates"),
+    RESOURCE_PATH + '/' + 'templates',
 )
 
 INSTALLED_APPS = (

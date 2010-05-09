@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=iso-8859-1" >
+    <title>{% block title %} FinickyFeeds {% endblock %}</title>
+    <!-- Django admin style sheets -->
+    <link rel="stylesheet" type="text/css" href="/media/css/base.css"/>
+    <!-- JQuery resources -->
+    <!-- Generally I try to avoid hard coded version numbers (so that upgrading
+    is easy) but if there are few (one) refs to the library it's useful for
+    doc'ing exactly what's being used... especially with somethign as
+    as a js library finicky -->
+    <link type="text/css"
+          href="/static/3p/jquery/css/ui-lightness/jquery-ui-1.8.1.custom.css"
+          rel="stylesheet" />	
+    <script type="text/javascript"
+            src="/static/3p/jquery/js/jquery-1.4.2.min.js"></script> 
+    <script type="text/javascript"
+            src="/static/3p/jquery/js/jquery-ui-1.8.1.custom.min.js"></script> 
+
+    <!-- A block which allows extending pages to insert their page-specific
+    script tags into the head -->    
+    {% block child_scripts %}
+    {% endblock child_scripts %}
+
+</head>
+<body>
+
+<!-- Container --> 
+<div id="container">
+
+<div id="header">
+    <div id="branding"> 
+        <h1 id="site-name">FinickyFeeds</h1>
+    </div>
+    {% block header_tools %} {% endblock header_tools %}
+</div>
+
+<!-- Content colMS-->
+<div id="content" class="colMS">
+
+    {% block top_nav %}
+    {% endblock top_nav %}
+
+    {% block main_content %}
+    {% endblock main_content %}
+
+</div>
+<!--End Content colMS-->
+
+</body>
+
+</div>
+<!-- End Container -->
+
+</html>
+
+

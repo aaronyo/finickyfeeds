@@ -1,0 +1,120 @@
+{% extends "base_logged_in.tmpl" %}
+
+{% block child_scripts %}
+
+    <script type="text/javascript"> 
+
+        var subscribe_done = function(data, status, req) {
+            alert( data );
+        }
+
+        // ajax_error is for http error codes or other systemic
+        // errors, not for expected errors like user input that
+        // doesn't validate
+        var ajax_error = function(req, status, error) {
+            error_win = window.open('', 'error_win');
+            error_win.document.write(req.responseText);
+        }
+
+        var subscribe = function(feed_url, tags_str) {
+            var tags = tags_str.split(",");
+            if ( feed_url !== "" ) {
+                var params = { feed_url: feed_url, tags: tags };
+                $.ajax({ type:"POST",
+                         url: "subscribe",
+                         data: params,
+                         data_type: "json",
+                         success: subscribe_done,
+                         error: ajax_error });
+            }
+        }
+
+        $( function() {
+	    // Attach accordian widget
+            $("#feeds-accordion").accordion({ header: "h3",
+                                              autoHeight: false });
+
+            // Attach button widget 
+            $("button").button();
+
+            $("button.subscribe").click( function() {
+                var url = $("#url_new").val();
+                var tags = $("#tags_new").val();
+                subscribe( url, tags );
+                return false;
+             });
+        })
+
+    </script>
+
+{% endblock child_scripts %}
+
+{% block main_content %}
+
+   <h2> Your Subscriptions </h2>
+    {% if subscriptions %}
+        <div id="feeds-accordion"> 
+                <div>
+                    <h3><a href="#">New Subscription</a></h3> 
+                    <div>
+                      <form>
+                        <table> <tr>
+                            <td>
+		              <label for="name">URL:</label>
+                            </td> <td>
+		              <input type="text" name="url" id="url_new"
+                                     class="text ui-widget-content
+		                            ui-corner-all"
+                                     size=80/>
+                            </td>
+                          </tr> <tr>
+                            <td>
+		              <label for="tags">Tags:</label>
+                            </td>
+                            <td>
+		              <input type="text" name="tags" id="tags_new"
+                                 class="text ui-widget-content
+                                        ui-corner-all"
+                                 size=80 />
+                            </td>
+                        </tr> </table>
+                        <button class="subscribe" id="_new"> Subscribe </button>
+	              </form>
+                    </div>
+                </div>
+            {% for sub in subscriptions %}
+                <div> 
+                    <h3><a href="#">{{ sub.feed.title }}</a></h3> 
+                    <div>
+                      <form>
+                        <table> <tr>
+                            <td>
+		              <label for="name">URL:</label>
+                            </td> <td>
+                              {{ sub.feed.url }}
+                            </td>
+                          </tr> <tr>
+                            <td>
+		              <label for="tags">Tags:</label>
+                            </td>
+                            <td>
+		              <input type="text" name="tags"
+                                     id="tags{{ sub.id }}"
+                                 class="text ui-widget-content
+                                        ui-corner-all"
+                                 size=80
+value= "{% for t in sub.tags.all %}{{ t.tag }}{% if not forloop.last %}, {% endif %}{% endfor %}"
+                                     />
+                            </td>
+                        </tr> </table>
+                        <button class="update"
+                                id="{{ sub.id }}"> Update </button>
+	              </form>
+                    </div>
+	        </div> 
+            {% endfor %}
+        </div> 
+    {% endif %}
+
+{% endblock main_content %}
+
