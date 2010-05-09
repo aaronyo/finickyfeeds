@@ -26,7 +26,8 @@ def _subscription_json_resp( subscription ):
     # Django's built in serializers don't handle relationship traversal.
     # So, this is a straightforward way to make a json response that
     # suits my immediate needs (very coupled to my currunt views)
-    sub_dct = { 'feed': { 'url': sub.feed.url, 'title': sub.feed.title },
+    sub_dct = { 'sub_id': sub.id,
+                'feed': { 'url': sub.feed.url, 'title': sub.feed.title },
                 'tags': [t.tag for t in sub.tags.all()] }
     response_dct = { 'result': 'success',
                      'subscription': sub_dct }
