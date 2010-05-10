@@ -191,7 +191,6 @@ var handler__unsub_click = function() {
 };
 
 var handler__subscribe_click = function() {
-    console.log("here");
     // we'll put the value scraping here and the subscribe function
     // will do the actually work
     var url = $("#url_new").val();
