@@ -11,7 +11,7 @@ var __ACCORDION_MANAGE_OPTIONS = { header: "h3",
 /////////////////////////////////
 
 var success__subscribe = function(data, status, req) {
-    ui__subscribe_wait_anim_hide();
+    ui__wait_anim_hide();
     var response = eval("(" + req.responseText + ")");
     if (response.result === "success") {
         var subscription = response.subscription;
