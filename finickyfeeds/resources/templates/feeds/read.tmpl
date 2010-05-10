@@ -1,0 +1,25 @@
+{% extends "base_logged_in.tmpl" %}
+
+{% block child_scripts %}
+
+    <script type="text/javascript" src="/static/js/feeds_read.js" ></script>
+
+{% endblock child_scripts %}
+
+{% block main_content %}
+
+   <h2> Read Subscriptions </h2>
+        <div id="feeds-accordion"> 
+          {% if subscriptions %}
+            {% for sub in subscriptions %}
+                <div class="subscription_entry" id={{ sub.id }} > 
+                    <h3><a href="#">{{ sub.feed.title }}</a></h3> 
+                    <div>
+                    </div>
+	        </div> 
+            {% endfor %}
+          {% endif %}
+        </div> 
+
+{% endblock main_content %}
+

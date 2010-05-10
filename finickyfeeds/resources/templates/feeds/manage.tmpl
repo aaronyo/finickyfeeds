@@ -2,13 +2,14 @@
 
 {% block child_scripts %}
 
-    <script type="text/javascript" src="/static/js/feeds.js" ></script>
+    <script type="text/javascript" src="/static/js/feeds/feeds_manage.js" >
+    </script>
 
 {% endblock child_scripts %}
 
 {% block main_content %}
 
-   <h2> Your Subscriptions </h2>
+   <h2> Manage Subscriptions </h2>
         <div id="feeds-accordion"> 
                 <div>
                     <h3><a href="#">New Subscription</a></h3> 
@@ -40,7 +41,7 @@
                 </div>
           {% if subscriptions %}
             {% for sub in subscriptions %}
-                <div> 
+                <div class="subscription_entry" id={{ sub.id }} > 
                     <h3><a href="#">{{ sub.feed.title }}</a></h3> 
                     <div>
                       <form>
@@ -64,6 +65,8 @@ value= "{% for t in sub.tags.all %}{{ t.tag }}{% if not forloop.last %}, {% endi
                                      />
                             </td>
                         </tr> </table>
+                        <button class="unsubscribe"
+                                id="{{ sub.id }}"> Unsubscribe </button>
                         <button class="update"
                                 id="{{ sub.id }}"> Update </button>
 	              </form>

@@ -9,17 +9,16 @@ import json
 from finickyfeeds.feeds.models import Feed, Subscription, Tag
 from finickyfeeds.feeds import services
 
-@login_required
-def manage( request ):
-    subs = Subscription.objects.filter(subscriber=request.user)
-    tmpl = loader.get_template('feeds/manage.tmpl')
-    ctx = RequestContext(request, { 'subscriptions': subs })
-    return HttpResponse(tmpl.render(ctx))
-
 def _failure_json_resp( msg ):
     response_dct = { 'result' : 'failure',
                       'message' : msg }
-    return json.dumps( response_dct )
+    return json.dumps(response_dct)
+
+def _success_json_resp( payload_name=None, payload_val=None ):
+    response_dct = { 'result': 'success' }
+    if payload_name != None:
+        response_dct[payload_name] = payload_val
+    return json.dumps(response_dct)
 
 def _subscription_json_resp( subscription ):
     sub = subscription
@@ -29,12 +28,31 @@ def _subscription_json_resp( subscription ):
     sub_dct = { 'sub_id': sub.id,
                 'feed': { 'url': sub.feed.url, 'title': sub.feed.title },
                 'tags': [t.tag for t in sub.tags.all()] }
-    response_dct = { 'result': 'success',
-                     'subscription': sub_dct }
-    return json.dumps( response_dct )
+    return _success_json_resp('subscription', sub_dct)
+
+def _json_http_response( body ):
+    return HttpResponse( body,
+                         content_type = 'application/javascript; charset=utf8' )
+@login_required
+def manage( request ):
+    subs = Subscription.objects.filter(subscriber=request.user)
+    tmpl = loader.get_template('feeds/manage.tmpl')
+    ctx = RequestContext(request, { 'subscriptions': subs })
+    return HttpResponse(tmpl.render(ctx))
+
+@login_required
+def unsubscribe( request ):
+    print request.POST
+    sub_id = request.POST.get('subscription_id')
+    sub = Subscription.objects.filter(id=sub_id)[0]
+    #FIXME: handle case where subscription isn't found... hard failure fine
+    #       for now
+    sub.delete()
+    return _json_http_response( _success_json_resp('subscription_id', sub_id) )
 
 @login_required
 def subscribe( request ):
+    # FIXME -- should implement real logging at some point
     print request.POST
     feed_url = request.POST.get('feed_url')
     tag_vals = request.POST.getlist('tags[]')
@@ -71,18 +89,18 @@ def subscribe( request ):
 
             resp_body = _subscription_json_resp( new_sub )
 
-    return HttpResponse( resp_body,
-                         content_type = 'application/javascript; charset=utf8' )
-    
-        
-              
-#    json_serializer = serializers.get_serializer("json")()
-#    json_serializer.serialize(queryset, ensure_ascii=False, stream=response)
-    return HttpResponse()
+    return _json_http_response(resp_body)
 
 @login_required
 def list( request ):
     sources = Feed.objects.all()
     tmpl = loader.get_template('feeds/list.tmpl')
     ctx = RequestContext(request, { 'feed_sources': sources })
+    return HttpResponse(tmpl.render(ctx))
+
+@login_required
+def read( request ):
+    subs = Subscription.objects.filter(subscriber=request.user)
+    tmpl = loader.get_template('feeds/read.tmpl')
+    ctx = RequestContext(request, { 'subscriptions': subs })
     return HttpResponse(tmpl.render(ctx))
