@@ -12,6 +12,17 @@
 {% block main_content %}
 
    <h2> Read Subscriptions </h2>
+     <p> Filter by tags{% if filter_tag %}<a href="?" > (unfilter)</a>{% endif %}: 
+     {% for tag, count in tag_counts %}
+        <a href="?tag={{ tag }}" >
+          {% ifequal filter_tag tag %}
+            <b>{{ tag }} ({{ count }})</b>
+          {% else %}
+            {{ tag }} ({{ count }})
+          {% endifequal %}
+        </a> &nbsp;&nbsp;&nbsp;
+     {% endfor %}
+     </p>
         <div id="feeds-accordion"> 
           {% if subscriptions %}
             {% for sub in subscriptions %}

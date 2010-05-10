@@ -17,6 +17,13 @@ var success__subscribe = function(data, status, req) {
     }
 };
 
+var success__update = function(data, status, req) {
+    var response = eval("(" + req.responseText + ")");
+    if (response.result === "success") {
+        alert( "You have updated your tags." );
+    }
+};
+
 var success__unsubscribe = function(data, status, req) {
     var response = eval("(" + req.responseText + ")");
     if (response.result === "success") {
@@ -26,9 +33,8 @@ var success__unsubscribe = function(data, status, req) {
     }
 };
 
-var call__subscribe = function(feed_url, tags_str) {
-    var tags = tags_str.split(",");
-    var params = { feed_url: feed_url, tags: tags };
+var call__subscribe = function(feed_url, tags) {
+    var params = { "feed_url": feed_url, "tags": tags };
     $.ajax({ type:"POST",
              url: "subscribe",
              data: params,
@@ -37,10 +43,19 @@ var call__subscribe = function(feed_url, tags_str) {
              error: failure__generic });
 };
 
+var call__update = function(subscription_id, tags) {
+    $.ajax({ type:"POST",
+             url: "updatesub",
+             data: {"subscription_id": subscription_id, "tags": tags},
+             data_type: "json",
+             success: success__update,
+             error: failure__generic });
+};
+
 var call__unsubscribe = function( subscription_id ) {
     $.ajax({ type:"POST",
              url: "unsubscribe",
-             data: {"subscription_id":subscription_id},
+             data: {"subscription_id": subscription_id},
              data_type: "json",
              success: success__unsubscribe,
              error: failure__generic });
@@ -118,11 +133,18 @@ var ui__subscribe_wait_anim = function() {
 };
 
 var ui__subscribe_wait_anim_hide = function() {
-    // FIXME: very brittle solution
     $(".wait-anim").remove();
 };
 
+var ui__tags_for_subscription = function( sub_id ) {
+    return $("input[id=tags"+sub_id+"]").val().split(",");
+};
+
 var handler__update_click = function() {
+    var sub_id = $(this).attr("id");
+    var tags = ui__tags_for_subscription( sub_id );
+    call__update( sub_id, tags );
+    return false;
 };
 
 var handler__unsub_click = function() {
@@ -137,8 +159,8 @@ var handler__subscribe_click = function() {
     // will do the actually work
     var url = $("#url_new").val();
     if ( url !== "" ) {
-        var tags = $("#tags_new").val();
         ui__subscribe_wait_anim();
+        var tags = $("#tags_new").val().split(",");
         call__subscribe( url, tags );
     }
     return false;
@@ -151,8 +173,10 @@ $( function() {
     // Attach button widget
     $("button").button();
 
-       $("button.subscribe").click( handler__subscribe_click );
+    $("button.subscribe").click( handler__subscribe_click );
 
     $("button.unsubscribe").click( handler__unsub_click );
+
+    $("button.update").click( handler__update_click );
 });
 

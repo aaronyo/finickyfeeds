@@ -14,14 +14,39 @@ class Feed(models.Model):
     def __unicode__(self):
         return self.url + ", " + self.title
 
+
 class Tag(models.Model):
     tag = models.CharField(max_length=30, unique=True)
     create_date = models.DateField(auto_now_add=True)
 
+    @staticmethod
+    def get_or_create(tag_vals):
+        '''
+        Convenience function for looking up or creating new tag records
+
+        Returns a set, so duplicates will be reduced.
+
+        '''
+        tags = set()
+        for val in tag_vals:
+            val = val.strip()
+            if val == '':
+                # Ignore blank tags
+                continue 
+            t_set = Tag.objects.filter(tag=val)
+            if t_set.count() == 1:
+                t = t_set[0]
+            else:
+                t = Tag(tag=val)
+                t.save()
+            tags.add(t)
+        return tags
+
     def __unicode__(self):
         return self.tag
 
-class Subscription( models.Model ):
+
+class Subscription(models.Model):
     tags = models.ManyToManyField(Tag)
     feed = models.ForeignKey(Feed)
     create_date = models.DateField(auto_now_add=True)
@@ -32,3 +57,5 @@ class Subscription( models.Model ):
 
     class Meta:
         unique_together = ("subscriber", "feed")
+
+

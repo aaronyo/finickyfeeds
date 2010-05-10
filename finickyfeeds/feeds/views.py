@@ -32,7 +32,7 @@ def _subscription_json( subscription ):
 
 def _json_http_response( body ):
     return HttpResponse( body,
-                         content_type = 'application/javascript; charset=utf8' )
+                         content_type = 'application/javascript; charset=utf8')
 
 
 #
@@ -50,8 +50,22 @@ def manage( request ):
 @login_required
 def read( request ):
     subs = Subscription.objects.filter(subscriber=request.user)
+    tag_counts = {}
+    for sub in subs:
+        for tag in sub.tags.all():
+            if tag.tag in tag_counts:
+                tag_counts[tag.tag] += 1
+            else:
+                tag_counts[tag.tag] = 1;
+    filter_tag = request.GET.get("tag")
+    if filter_tag != None:
+        subs = subs.filter( tags=Tag.objects.filter(tag=filter_tag)[0] )
+    tag_counts = tag_counts.items()
+    tag_counts.sort()
     tmpl = loader.get_template('feeds/read.tmpl')
-    ctx = RequestContext(request, { 'subscriptions': subs })
+    ctx = RequestContext(request, { 'subscriptions': subs,
+                                    'tag_counts': tag_counts,
+                                    'filter_tag': filter_tag })
     return HttpResponse(tmpl.render(ctx))
 
 @login_required
@@ -79,8 +93,22 @@ def unsubscribe( request ):
     return _json_http_response( _success_json('subscription_id', sub_id) )
 
 @login_required
+def update_subscription( request ):
+    print request.POST
+    sub_id = request.POST.get('subscription_id')
+    tag_vals = request.POST.getlist('tags[]')
+
+    sub = Subscription.objects.filter(id=sub_id)[0]
+    sub.tags.clear()
+    tags = Tag.get_or_create( tag_vals )
+    sub.tags.add( *tags )
+    sub.save()
+
+    return _json_http_response( _success_json() )
+
+@login_required
 def subscribe( request ):
-    # FIXME -- should implement real logging at some point
+    # FIXME: should implement real logging at some point
     print request.POST
     feed_url = request.POST.get('feed_url')
     tag_vals = request.POST.getlist('tags[]')
@@ -101,17 +129,11 @@ def subscribe( request ):
             if not feed.pk:
                 # then it's a new feed
                 feed.save()
-            tags = []
-            for val in tag_vals:
-                t_set = Tag.objects.filter(tag=val)
-                if t_set.count() == 1:
-                    t = t_set[0]
-                else:
-                    t = Tag(tag=val)
-                    t.save()
-                tags.append(t)
             new_sub = Subscription(feed=feed, subscriber=request.user)
             new_sub.save()
+
+            tags = Tag.get_or_create( tag_vals )
+
             new_sub.tags.add( *tags )
             new_sub.save()
 
