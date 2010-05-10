@@ -1,0 +1,40 @@
+FinickyFeeds is a simple feed reader that allows you to filter subscriptions
+by tags.  More than that, FinicktyFeeds is my first experiment with Django and
+JQuery -- a learning exercise.
+
+After logging in, you will be able to access the two available pages,
+"read" and "manage", via the links at the top of the page.
+
+
+read
+----
+
+This page is where you can browse the articles found in your subscriptions.
+
+If you've tagged your subscriptions, you'll be able to filter by tags provided
+towards the top of the page.
+
+
+manage
+------
+Here you can add, delete, and update tags for your subscriptions.
+
+IMPORTANT: FinickyFeeds does not have any fancy feed "discovery" features,
+so you'll need to provide the exact URL for an RSS or Atom feed definition.
+If you are not sure how to find these URL's but want to play around with the
+app, here are some sample urls to plug in:
+
+Endgadget
+http://engadget.com/rss.xml
+
+Gizmodo
+http://gizmodo.com/index.xml
+
+Lifehacker
+http://lifehacker.com/index.xml
+
+Salt & Fat
+http://saltandfat.com/rss
+
+Popular ajax Bookmarks on Delicious
+http://feeds.delicious.com/v2/rss/popular/ajax?count=5
