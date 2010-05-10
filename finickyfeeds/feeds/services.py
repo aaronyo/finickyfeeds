@@ -29,4 +29,27 @@ def feed_for_url( url ):
             new_feed = Feed(url=url, title=feed_data.feed.title)
             return new_feed
 
+def articles_for_url( url ):
+
+    '''
+    Return our own represenation of articles.
+
+    We do this rather than just sending entries through so that we can
+    tailor this rich information to our specific needs.
+    '''
+
+    # FIXME: needs error handling -- obviously we expect sites
+    # to not respond from time to time
+    feed_data = feedparser.parse( url )
+    articles = []
+    i = 0
+    for entry in feed_data.entries:
+        article_dct = { "title": entry.title,
+                        "url": entry.link,
+                        "summary": entry.summary }
+        articles.append( article_dct )
+        if len(articles) == 5:
+            break
+
+    return articles
     

@@ -2,7 +2,10 @@
 
 {% block child_scripts %}
 
-    <script type="text/javascript" src="/static/js/feeds_read.js" ></script>
+    <script type="text/javascript" src="/static/js/feeds/feeds_common.js" >
+    </script>
+    <script type="text/javascript" src="/static/js/feeds/feeds_read.js" >
+    </script>
 
 {% endblock child_scripts %}
 
@@ -14,8 +17,7 @@
             {% for sub in subscriptions %}
                 <div class="subscription_entry" id={{ sub.id }} > 
                     <h3><a href="#">{{ sub.feed.title }}</a></h3> 
-                    <div>
-                    </div>
+                    <div class="articles" id="{{ sub.id }}"> <img src="/static/image/ajax-loader.gif" /> </div>
 	        </div> 
             {% endfor %}
           {% endif %}

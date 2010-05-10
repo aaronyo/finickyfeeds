@@ -2,6 +2,8 @@
 
 {% block child_scripts %}
 
+    <script type="text/javascript" src="/static/js/feeds/feeds_common.js" >
+    </script>
     <script type="text/javascript" src="/static/js/feeds/feeds_manage.js" >
     </script>
 
@@ -14,7 +16,6 @@
                 <div>
                     <h3><a href="#">New Subscription</a></h3> 
                     <div>
-                      <form>
                         <table> <tr>
                             <td>
 		              <label for="name">URL:</label>
@@ -35,8 +36,9 @@
                                  size=80 />
                             </td>
                         </tr> </table>
-                        <button class="subscribe" id="_new"> Subscribe </button>
-	              </form>
+                        <button class="subscribe"
+                                      id="_new">
+                                      Subscribe </button>
                     </div>
                 </div>
           {% if subscriptions %}

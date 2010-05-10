@@ -1,0 +1,9 @@
+<div class="articles" id="{{ subscription_id }}">
+
+  {% for article in articles %} 
+    <a class="articles-link" href={{ article.url }} target="_blank"> {{ article.title }} </a>
+   <ul>
+     <li> {{ article.summary|striptags|truncatewords_html:100 }} </li>
+   </ul>
+  {% endfor %}
+</div>

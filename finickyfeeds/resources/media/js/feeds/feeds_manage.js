@@ -1,38 +1,7 @@
-/*
- * Javascript used by the feeds pages.  I stopped short of using OO to
- * organize the code, but I used some convention (function prefixes) to make
- * the code easier to follow:
- *
- * Ajax:
- * call__* : a function that wraps an ajax call
- * success__* : a callback for a successful ajax response
- * failure__* : a callback for a failed ajax response
- *
- * Dom Manipluation:
- * ui__* : all changing of the dom is contained behind these functions
- *
- * Event processing:
- * handler__* : These functions are attached to events, such as click.
- *              The handler function should handled scraping any values
- *              needed out of the dom, and then delegating the actual
- *              work to a function that can be decoupled from the dom or
- *              make use of ui__* functions.
- *
- * FIXME: There is still some duplication between html in the template files and
- *        and html embedded in this js that should be removed.
- *
- */
-
-
 var __ACCORDION_MANAGE_OPTIONS = { header: "h3", autoHeight: false };
-var __ACCORDION_READ_OPTIONS = { header: "h3",
-                                 autoHeight: false,
-                                 // Start without any feed displayed to
-                                 // prevent unnecessary lookup of articles.
-                                 collapsible: true,
-                                 active: false};
 
 var success__subscribe = function(data, status, req) {
+    ui__subscribe_wait_anim_hide();
     var response = eval("(" + req.responseText + ")");
     if (response.result === "success") {
         var subscription = response.subscription;
@@ -57,27 +26,15 @@ var success__unsubscribe = function(data, status, req) {
     }
 };
 
-// ajax_error is for http error codes or other systemic
-// errors, not for expected errors like user input that
-// doesn't validate
-var failure__generic = function(req, status, error) {
-    // popup a window with the body of the error.
-    // highly useful for displaying Django stack traces
-    error_win = window.open('', 'error_win');
-    error_win.document.write(req.responseText);
-};
-
 var call__subscribe = function(feed_url, tags_str) {
     var tags = tags_str.split(",");
-    if ( feed_url !== "" ) {
-        var params = { feed_url: feed_url, tags: tags };
-        $.ajax({ type:"POST",
-                 url: "subscribe",
-                 data: params,
-                 data_type: "json",
-                 success: success__subscribe,
-                 error: failure__generic });
-    }
+    var params = { feed_url: feed_url, tags: tags };
+    $.ajax({ type:"POST",
+             url: "subscribe",
+             data: params,
+             data_type: "json",
+             success: success__subscribe,
+             error: failure__generic });
 };
 
 var call__unsubscribe = function( subscription_id ) {
@@ -141,7 +98,6 @@ var ui__add_subscription = function( subscription_id,
 };
 
 var ui__remove_subscription = function( sub_id ) {
-    console.log("sub_id: " + sub_id);
     $(".subscription_entry[id="+sub_id+"]").remove();
     // redraw, otherwise some cached information seems amiss...
     $("#feeds-accordion").
@@ -154,11 +110,37 @@ var ui__clear_new_subscription = function() {
     $("#tags_new").val("");
 };
 
+var ui__subscribe_wait_anim = function() {
+    $("button.subscribe").after( "<span>" +
+                                 //poor man's spacer
+                                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                                 __THROBBER_HTML + "</span>");
+};
+
+var ui__subscribe_wait_anim_hide = function() {
+    // FIXME: very brittle solution
+    $(".wait-anim").remove();
+};
+
 var handler__update_click = function() {
-}
+};
+
 var handler__unsub_click = function() {
     var sub_id = $(this).attr("id");
     call__unsubscribe( sub_id );
+    return false;
+};
+
+var handler__subscribe_click = function() {
+    console.log("here");
+    // we'll put the value scraping here and the subscribe function
+    // will do the actually work
+    var url = $("#url_new").val();
+    if ( url !== "" ) {
+        var tags = $("#tags_new").val();
+        ui__subscribe_wait_anim();
+        call__subscribe( url, tags );
+    }
     return false;
 };
 
@@ -169,14 +151,7 @@ $( function() {
     // Attach button widget
     $("button").button();
 
-    $("button.subscribe").click( function() {
-        // we'll put the value scraping here and the subscribe function
-        // will do the actually work
-        var url = $("#url_new").val();
-        var tags = $("#tags_new").val();
-        call__subscribe( url, tags );
-        return false;
-    });
+       $("button.subscribe").click( handler__subscribe_click );
 
     $("button.unsubscribe").click( handler__unsub_click );
 });
