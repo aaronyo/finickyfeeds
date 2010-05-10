@@ -16,7 +16,7 @@ urlpatterns = \
 
              # Default to the list view, which requires login so you'll
              # bounce there if not logged in
-             (r'finickyfeeds/$', 'finickyfeeds.feeds.views.list'),
+             (r'finickyfeeds/$', 'finickyfeeds.feeds.views.read'),
 
              # Standard django login/logout view handlers
              (r'^finickyfeeds/login/',
