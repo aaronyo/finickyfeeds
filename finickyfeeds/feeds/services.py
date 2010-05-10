@@ -45,9 +45,15 @@ def articles_for_url( url ):
     articles = []
     i = 0
     for entry in feed_data.entries:
+        if "summary" in entry:
+            summary = entry.summary
+        elif "content" in entry:
+            summary = entry.content[0].value
+        else:
+            summary = ""
         article_dct = { 'title': entry.title,
                         'url': entry.link,
-                        'summary': entry.summary }
+                        'summary': summary }
         articles.append( article_dct )
         if len(articles) == 5:
             break
