@@ -7,12 +7,12 @@ class Feed(models.Model):
     # and prefer not to hide as defaults
     url = models.URLField(max_length=200, unique=True)
     title = models.CharField(max_length=200,
-                             help_text="The title of the rss feed as " +
-                             "supplied by the feed -- not user editable")
+                             help_text='The title of the rss feed as ' +
+                             'supplied by the feed -- not user editable')
     create_date = models.DateField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.url + ", " + self.title
+        return self.url + ', ' + self.title
 
 
 class Tag(models.Model):
@@ -21,12 +21,12 @@ class Tag(models.Model):
 
     @staticmethod
     def get_or_create(tag_vals):
-        '''
+        """
         Convenience function for looking up or creating new tag records
 
-        Returns a set, so duplicates will be reduced.
+        Uses a set, so duplicates will be reduced.
 
-        '''
+        """
         tags = set()
         for val in tag_vals:
             val = val.strip()
@@ -40,10 +40,17 @@ class Tag(models.Model):
                 t = Tag(tag=val)
                 t.save()
             tags.add(t)
-        return tags
+
+        sorted_tags = list(tags)
+        sorted_tags.sort()
+
+        return sorted_tags
 
     def __unicode__(self):
         return self.tag
+
+    class Meta:
+        ordering = ['tag']
 
 
 class Subscription(models.Model):
@@ -53,9 +60,9 @@ class Subscription(models.Model):
     subscriber = models.ForeignKey( User )
 
     def __unicode__(self):
-        return self.subscriber.username + ", " + self.feed.__unicode__()
+        return self.subscriber.username + ', ' + self.feed.__unicode__()
 
     class Meta:
-        unique_together = ("subscriber", "feed")
+        unique_together = ('subscriber', 'feed')
 
 

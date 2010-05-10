@@ -102,9 +102,18 @@ def update_subscription( request ):
     sub.tags.clear()
     tags = Tag.get_or_create( tag_vals )
     sub.tags.add( *tags )
+
     sub.save()
 
-    return _json_http_response( _success_json() )
+    # The tags got trimmed and dupes removed -- see Tag.get_or_create()
+    result_tag_vals = [t.tag for t in tags]
+    # Pass back the subscription_id, too, as a convenience for updating
+    # the displayed tags
+    print "result_tags: "
+    print result_tag_vals
+    resp_content = { "subscription_id": sub_id,
+                     "tags": result_tag_vals }
+    return _json_http_response( _success_json( "content", resp_content ) )
 
 @login_required
 def subscribe( request ):

@@ -1,4 +1,6 @@
-var __ACCORDION_MANAGE_OPTIONS = { header: "h3", autoHeight: false };
+var __ACCORDION_MANAGE_OPTIONS = { header: "h3",
+                                 autoHeight: false,
+                                 collapsible: true };
 
 var success__subscribe = function(data, status, req) {
     ui__subscribe_wait_anim_hide();
@@ -20,16 +22,15 @@ var success__subscribe = function(data, status, req) {
 var success__update = function(data, status, req) {
     var response = eval("(" + req.responseText + ")");
     if (response.result === "success") {
-        alert( "You have updated your tags." );
+        ui__set_tags_for_subscription( response.content.subscription_id,
+                                       response.content.tags );
     }
+    ui__wait_anim_hide();
 };
 
 var success__unsubscribe = function(data, status, req) {
     var response = eval("(" + req.responseText + ")");
     if (response.result === "success") {
-        alert( "You have unsubscribed." );
-        var sub_id = response.subscription_id;
-        ui__remove_subscription( sub_id );
     }
 };
 
@@ -113,11 +114,15 @@ var ui__add_subscription = function( subscription_id,
 };
 
 var ui__remove_subscription = function( sub_id ) {
+    // jQuery has a nice cloning feature...
+    var collapsed = $.extend( {},
+                              __ACCORDION_MANAGE_OPTIONS,
+                              { active: false } );
     $(".subscription_entry[id="+sub_id+"]").remove();
-    // redraw, otherwise some cached information seems amiss...
+    // redraw, fully collapsed (since we're removing the open entry
     $("#feeds-accordion").
         accordion("destroy").
-        accordion(__ACCORDION_MANAGE_OPTIONS);
+        accordion(collapsed);
 };
 
 var ui__clear_new_subscription = function() {
@@ -126,13 +131,17 @@ var ui__clear_new_subscription = function() {
 };
 
 var ui__subscribe_wait_anim = function() {
-    $("button.subscribe").after( "<span>" +
-                                 //poor man's spacer
-                                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                 __THROBBER_HTML + "</span>");
+    ui__button_wait_anim( $("button.subscribe") )
+}
+
+var ui__button_wait_anim = function( btn_selector ) {
+    btn_selector.after( "<span>" +
+                        //poor man's spacer
+                        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                        __THROBBER_HTML + "</span>");
 };
 
-var ui__subscribe_wait_anim_hide = function() {
+var ui__wait_anim_hide = function() {
     $(".wait-anim").remove();
 };
 
@@ -140,9 +149,14 @@ var ui__tags_for_subscription = function( sub_id ) {
     return $("input[id=tags"+sub_id+"]").val().split(",");
 };
 
+var ui__set_tags_for_subscription = function( sub_id, tags ) {
+    $("input[id=tags"+sub_id+"]").val( tags.join(", ") );
+}
+
 var handler__update_click = function() {
     var sub_id = $(this).attr("id");
     var tags = ui__tags_for_subscription( sub_id );
+    ui__button_wait_anim( $(this) );
     call__update( sub_id, tags );
     return false;
 };
@@ -150,6 +164,7 @@ var handler__update_click = function() {
 var handler__unsub_click = function() {
     var sub_id = $(this).attr("id");
     call__unsubscribe( sub_id );
+    ui__remove_subscription( sub_id );
     return false;
 };
 
