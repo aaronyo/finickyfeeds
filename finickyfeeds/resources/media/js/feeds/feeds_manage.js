@@ -1,6 +1,14 @@
+/* See feeds_common.js for an overview of the naming conventions used */
+
 var __ACCORDION_MANAGE_OPTIONS = { header: "h3",
                                  autoHeight: false,
                                  collapsible: true };
+
+/////////////////////////////////
+
+// AJAX Wrappers and Callbacks //
+
+/////////////////////////////////
 
 var success__subscribe = function(data, status, req) {
     ui__subscribe_wait_anim_hide();
@@ -29,9 +37,8 @@ var success__update = function(data, status, req) {
 };
 
 var success__unsubscribe = function(data, status, req) {
-    var response = eval("(" + req.responseText + ")");
-    if (response.result === "success") {
-    }
+    // Do nothing.  Use to display an alert here.
+    // FIXME: remove this function.
 };
 
 var call__subscribe = function(feed_url, tags) {
@@ -61,6 +68,14 @@ var call__unsubscribe = function( subscription_id ) {
              success: success__unsubscribe,
              error: failure__generic });
 };
+
+
+//////////////////////
+
+// DOM Manipulation //
+
+//////////////////////
+
 
 // sub_id: the subscription's id which is embedded so that later evenrs
 //         can reference the correct subscription
@@ -152,6 +167,13 @@ var ui__tags_for_subscription = function( sub_id ) {
 var ui__set_tags_for_subscription = function( sub_id, tags ) {
     $("input[id=tags"+sub_id+"]").val( tags.join(", ") );
 }
+
+
+//////////////////////
+
+// Event Handlers   //
+
+//////////////////////
 
 var handler__update_click = function() {
     var sub_id = $(this).attr("id");

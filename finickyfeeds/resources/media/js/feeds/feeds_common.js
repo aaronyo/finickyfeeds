@@ -11,18 +11,19 @@
  * failure__* : a callback for a failed ajax response
  *
  * Dom Manipluation:
- * ui__* : all changing of the dom is contained behind these functions
+ * ui__* : all changing of the dom is contained behind these functions.  Nearly
+ *         all selecting from the DOM is done here, too.  This keeps the
+ *         references to hard coded id's and dom structure isolated so it can
+ *         be refined without breaking all the javascript.
  *
- * Event processing:
+ * Event Handling:
  * handler__* : These functions are attached to events, such as click.
  *              The handler function should handled scraping any values
- *              needed out of the dom, and then delegating the actual
- *              work to a function that can be decoupled from the dom or
- *              make use of ui__* functions.
+ *              needed out of the dom (ideally using ui__ functons), and then
+ *              delegate the actual work.
  *
  * FIXME: There is still some duplication between html in the template files and
  *        and html embedded in this js that should be removed.
- *
  */
 
 // ajax_error is for http error codes or other systemic

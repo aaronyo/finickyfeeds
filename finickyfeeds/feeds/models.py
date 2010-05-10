@@ -2,9 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Feed(models.Model):
-
-    # Explicitly stating max lenghts as this is important information
-    # and prefer not to hide as defaults
     url = models.URLField(max_length=200, unique=True)
     title = models.CharField(max_length=200,
                              help_text='The title of the rss feed as ' +

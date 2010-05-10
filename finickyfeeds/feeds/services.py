@@ -1,5 +1,5 @@
-'''Operations that are best represented as separate functions rather than
-coupled to a particular model definition'''
+""" Operations that are best represented as separate functions rather than
+coupled to a particular model definition. """
 
 from finickyfeeds.feeds.models import Feed
 
@@ -7,13 +7,12 @@ import feedparser
 
 
 def feed_for_url( url ):
-
-    '''
+    """
     Return the matching Feed instance or create a new one.
 
     * If a new feed is created, it will not yet be peristed.
     * If no feed can be found for the given url, None will be This.
-    '''
+    """
 
     # This QuerySet size must be 1 or 0 due to the uniqueness constraints
     # on the Feed model
@@ -29,14 +28,16 @@ def feed_for_url( url ):
             new_feed = Feed(url=url, title=feed_data.feed.title)
             return new_feed
 
-def articles_for_url( url ):
 
-    '''
+def articles_for_url( url ):
+    """
     Return our own represenation of articles.
 
     We do this rather than just sending entries through so that we can
     tailor this rich information to our specific needs.
-    '''
+
+    Hard coded to latest 5 entries for now.
+    """
 
     # FIXME: needs error handling -- obviously we expect sites
     # to not respond from time to time
@@ -44,9 +45,9 @@ def articles_for_url( url ):
     articles = []
     i = 0
     for entry in feed_data.entries:
-        article_dct = { "title": entry.title,
-                        "url": entry.link,
-                        "summary": entry.summary }
+        article_dct = { 'title': entry.title,
+                        'url': entry.link,
+                        'summary': entry.summary }
         articles.append( article_dct )
         if len(articles) == 5:
             break

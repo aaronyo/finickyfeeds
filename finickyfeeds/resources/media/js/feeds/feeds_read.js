@@ -1,3 +1,5 @@
+/* See feeds_common.js for an overview of the naming conventions used */
+
 var __ACCORDION_READ_OPTIONS = { header: "h3",
                                  autoHeight: false,
                                  // Start without any feed displayed to
@@ -25,6 +27,7 @@ var call__articles = function( subscription_id ) {
                                         load_callback );
 
 };
+
 
 var ui__clear_articles = function( subscription_id ) {
     ui__articles_element( subscription_id ).
