@@ -3,7 +3,7 @@ by tags.  More than that, FinicktyFeeds is my first experiment with Django and
 JQuery -- a learning exercise.
 
 After logging in, you will be able to access the two available pages,
-"read" and "manage", via the links at the top of the page.
+"read" and "manage," via the links at the top of the page.
 
 
 read
