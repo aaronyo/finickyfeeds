@@ -22,7 +22,7 @@ var call__articles = function( subscription_id ) {
         }
     };
 
-    ui__articles_element( sub_id ).load('articles',
+    ui__articles_element( sub_id ).load('/finickyfeeds/feeds/read/articles',
                                         {'subscription_id':sub_id},
                                         load_callback );
 
