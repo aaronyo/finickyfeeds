@@ -1,6 +1,6 @@
 FinickyFeeds is a simple feed reader that allows you to filter subscriptions
-by tags.  More than that, FinicktyFeeds is a sample app I through together
-over the weekend as part of interview.  The goal was to show that I could
+by tags.  More than that, FinicktyFeeds is a sample app I put together
+over a weekend as part of an interview.  The goal was to show that I could
 ramp on new languages and frameworks quickly.  It is my first experience
 working with Django and JQuery.
 
